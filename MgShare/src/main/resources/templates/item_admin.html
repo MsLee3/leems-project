@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>在庫管理 - MG_Share</title>
+  <!-- Bootstrap Core CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="styles.css" rel="stylesheet" />
+</head>
+<body>
+<!-- Navigation bar -->
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">MG Share</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#!">申請管理</a></li>
+        <li class="nav-item"><a class="nav-link" href="#!">在庫管理</a></li>
+        <li class="nav-item"><a class="nav-link" href="#!">会員管理</a></li>
+        <li class="nav-item"><a class="small text-muted" href="#!">ログアウト</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Page Content -->
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-lg border-5 rounded-lg mt-5">
+        <div class="card-header"><h3 class="text-center font-weight-light my-4">在庫管理</h3></div>
+        <div class="card-body">
+          <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addItemModal">品物を追加</button>
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>品物名</th>
+              <th>在庫</th>
+              <th>利用者</th>
+              <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>Item 1</td>
+              <td>1</td>
+              <td><button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#viewUsersModal" onclick="loadUsers('Item 1')">利用者を見る</button></td>
+              <td>
+                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editItemModal">変更</button>
+                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteItemModal">削除</button>
+              </td>
+            </tr>
+            <!-- Add more items as needed -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Item Modal -->
+<div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addItemModalLabel">品物を追加</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="itemName" class="form-label">品物名</label>
+            <input type="text" class="form-control" id="itemName" required>
+          </div>
+          <div class="mb-3">
+            <label for="itemStock" class="form-label">在庫</label>
+            <input type="number" class="form-control" id="itemStock" required>
+          </div>
+          <button type="submit" class="btn btn-success">追加</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Item Modal -->
+<div class="modal fade" id="editItemModal" tabindex="-1" aria-labelledby="editItemModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editItemModalLabel">品物を変更</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="editItemName" class="form-label">品物名</label>
+            <input type="text" class="form-control" id="editItemName" required>
+          </div>
+          <div class="mb-3">
+            <label for="editItemStock" class="form-label">在庫</label>
+            <input type="number" class="form-control" id="editItemStock" required>
+          </div>
+          <button type="submit" class="btn btn-warning">変更</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Item Modal -->
+<div class="modal fade" id="deleteItemModal" tabindex="-1" aria-labelledby="deleteItemModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteItemModalLabel">品物を削除</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>本当にこの品物を削除しますか？</p>
+        <button type="button" class="btn btn-danger">削除</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View Users Modal -->
+<div class="modal fade" id="viewUsersModal" tabindex="-1" aria-labelledby="viewUsersModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewUsersModalLabel">利用者一覧</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group" id="userList">
+          <!-- Use server data to dynamically generate user list -->
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+<script>
+  function loadUsers(itemName) {
+    // 이 함수는 아이템 이름에 따라 서버에서 사용자 데이터를 가져옵니다.
+    // 예시를 위해 고정된 데이터를 사용합니다.
+    var users = {
+      "Item 1": ["会員1", "会員2"],
+      // 필요한 만큼 아이템을 추가할 수 있습니다.
+    };
+
+    var userList = document.getElementById("userList");
+    userList.innerHTML = ""; // 이전 사용자 목록을 초기화합니다.
+
+    if (users[itemName]) {
+      users[itemName].forEach(function(user) {
+        var li = document.createElement("li");
+        li.className = "list-group-item";
+        li.textContent = user;
+        userList.appendChild(li);
+      });
+    } else {
+      var li = document.createElement("li");
+      li.className = "list-group-item";
+      li.textContent = "利用者がいません。";
+      userList.appendChild(li);
+    }
+  }
+</script>
+</body>
+</html>

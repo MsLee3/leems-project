@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>マイページ - MG_Share</title>
+  <!-- Bootstrap Core CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="styles.css" rel="stylesheet" />
+</head>
+<body>
+<!-- Navigation bar with content -->
+<nav class="navbar navbar-dark bg-dark">  <!--navbar-expand-lg-->
+  <div class="container">
+    <a class="navbar-brand" href="#!">MG Share</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#!">メインページ</a></li>
+        <li class="nav-item"><a class="small text-muted" href="#!">ログアウト</a></li>
+        <!--<li class="nav-item"><a class="nav-link" href="#!">ログアウト</a></li>-->
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- My Page Content -->
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-lg border-5 rounded-lg mt-5">
+        <div class="card-header"><h3 class="text-center font-weight-light my-4">マイページ</h3></div>
+        <div class="card-body">
+          <h4 class="mb-3">会員情報</h4>
+          <p>名前: 田中 太郎</p>
+          <p>メールアドレス: tanaka@example.com</p>
+          <p>登録日: 2023年1月1日</p>
+          <div class="mb-3">
+            <button type="button" class="btn btn-primary">情報を更新</button>
+            <button type="button" class="btn btn-danger">会員脱退</button>
+          </div>
+          <h4 class="mt-5 mb-3">貸出履歴</h4>
+          <ul class="list-group" id="loanHistory">
+            <!-- JavaScript로 대출 목록을 동적으로 추가 -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    loadLoanHistory();
+  });
+
+  function loadLoanHistory() {
+    // 나중에 서버에서 데이터를 가져와서 사용할 수 있도록 설정
+    // 현재는 예제 데이터로 대체
+    const loanData = [
+      { itemName: "書籍「ビジネスの基礎」", startDate: "2023.5.10", endDate: "2023.5.20" },
+      { itemName: "書籍「マーケティング入門」", startDate: "2023.6.1", endDate: "2023.6.10" },
+    ];
+
+    const loanHistory = document.getElementById("loanHistory");
+    loanHistory.innerHTML = ""; // 이전 데이터를 초기화
+
+    loanData.forEach(loan => {
+      const listItem = document.createElement("li");
+      listItem.className = "list-group-item d-flex justify-content-between align-items-center";
+      listItem.innerHTML = `
+        ${loan.itemName} - ${loan.startDate} ~ ${loan.endDate}
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="requestReturn(this)">返却申請</button>
+      `;
+      loanHistory.appendChild(listItem);
+    });
+  }
+
+  function requestReturn(button) {
+    // 반납 신청 로직을 구현
+    // 예제에서는 버튼 텍스트 변경으로 대체
+    button.textContent = "返却申請完了";
+    button.classList.remove("btn-outline-secondary");
+    button.classList.add("btn-success");
+    button.disabled = true;
+
+    // 신청 완료 메시지 표시
+    alert("返却申請が完了しました。");
+  }
+</script>
+</body>
+</html>
