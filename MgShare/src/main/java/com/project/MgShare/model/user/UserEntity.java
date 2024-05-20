@@ -1,7 +1,6 @@
 package com.project.MgShare.model.user;
 
 import jakarta.persistence.*;
-
 import lombok.Getter;
 import lombok.Setter;
 

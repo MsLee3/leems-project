@@ -22,19 +22,25 @@ public class UserService {
 
         boolean isUserExist = userRepository.existsUserEntitiesByEmail(registerDTO.getEmail());
 
+        if (!registerDTO.getUsername().matches("^[^\\d]*$")) {
+            throw new IllegalArgumentException("Invalid name");
+        }
 
-        System.out.println(registerDTO.getUsername());
-        System.out.println(registerDTO.getEmail());
-        System.out.println(registerDTO.getPassword());
+        if (!registerDTO.getPhoneNumber().matches("^[0-9]+$")) {
+            throw new IllegalArgumentException("Invalid phone number");
+        }
 
-        if (isUserExist) {
+        if (!registerDTO.getEmail().endsWith("@mirineglobal.com")) {
+            throw new IllegalArgumentException("Invalid email domain");
+        }
+
+        if(isUserExist) {
             throw new IllegalArgumentException("Email already exists");
         }
 
-        if (registerDTO.getPassword() == null) {
-            throw new IllegalArgumentException("Password cannot be null");
-        }
-
+        System.out.println(registerDTO.getUsername());
+        System.out.println(registerDTO.getPassword());
+        System.out.println(registerDTO.getEmail());
         UserEntity data = new UserEntity();
 
         data.setUsername(registerDTO.getUsername());

@@ -1,6 +1,7 @@
 package com.project.MgShare.controller.user;
 
 import com.project.MgShare.dto.user.RegisterDTO;
+import com.project.MgShare.model.user.UserEntity;
 import com.project.MgShare.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,30 +13,27 @@ public class UserController {
 
     private final UserService userService;
 
-//    @GetMapping("/")
-//    public String first() {
-//        return "login_page";
-//    }
-
-    @GetMapping("/login")
-    public String login() {
-        return "login_page";
-    }
-
-    @GetMapping("/register")
+    @GetMapping("/register") //会員登録
     public String register() {
+
         return "register_page";
     }
 
-    @PostMapping("/registerP")
-    public String registerP(@ModelAttribute RegisterDTO registerDTO) {
+    @PostMapping("/registerPass") //会員登録完了
+    public String registerPass(@ModelAttribute RegisterDTO registerDTO) {
 
-        userService.UserRegisterSave(registerDTO);
+            userService.UserRegisterSave(registerDTO);
 
-        return "redirect:/login";
+            return "redirect:/login";
     }
 
-    @PostMapping("/main")
+    @GetMapping("/login")
+    public String login() {
+
+        return "login_page";
+    }
+
+    @PostMapping("/user/main")
     public String loginP() {
 
 

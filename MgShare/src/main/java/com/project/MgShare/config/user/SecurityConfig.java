@@ -12,27 +12,20 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean //PW 暗号化
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-
-        return new BCryptPasswordEncoder();
-    }
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws  Exception{
 
         httpSecurity
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/login", "register","registerP").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
-                        .requestMatchers("/info/**","/main").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/", "/login", "register","registerPass").permitAll() //制限なし
+                        .requestMatchers("/admin").hasRole("ADMIN") //管理者
+                        .requestMatchers("/info/**","/user/main").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()
                 );
 
         httpSecurity
                 .formLogin((auth) -> auth.loginPage("/login")
-                        .loginProcessingUrl("/loginP")
+                        .loginProcessingUrl("/loginPass")
                         .permitAll()
                 );
 
@@ -41,6 +34,11 @@ public class SecurityConfig {
 
         return httpSecurity.build();
 
+    }
+
+    @Bean //PW 暗号化
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }
