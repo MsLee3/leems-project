@@ -1,25 +1,34 @@
 package com.project.MgShare.config.user;
 
 
+import com.project.MgShare.service.user.UserSecurityService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
+import org.springframework.security.config.annotation.web.configurers.RememberMeConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final UserSecurityService userSecurityService;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws  Exception{
 
         httpSecurity
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/","/login", "register","register/save","/js/**","/css/**").permitAll() //制限なし
+                        .requestMatchers("/", "register","register/save","/js/**","/css/**").permitAll() //制限なし
                         .requestMatchers("/admin").hasRole("ADMIN") //管理者
                         .requestMatchers("/info/**","/user/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()
@@ -29,8 +38,24 @@ public class SecurityConfig {
                 .formLogin((auth) -> auth
                         .loginPage("/login")
                         .usernameParameter("userEmail")
-                        .defaultSuccessUrl("/main", true)
+                        .defaultSuccessUrl("/user/main",true) //1st true
                         .permitAll()
+                );
+
+        httpSecurity
+                .rememberMe(rememberMe -> rememberMe
+                        .key("uniqueAndSecret")
+                        .tokenValiditySeconds(-1)
+                        .userDetailsService(userSecurityService)
+                );
+
+        httpSecurity
+                .logout((auth) -> auth
+                    .logoutUrl("/user/logout")
+                    .logoutSuccessUrl("/")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                    .permitAll()
                 );
 
         httpSecurity
@@ -49,5 +74,4 @@ public class SecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

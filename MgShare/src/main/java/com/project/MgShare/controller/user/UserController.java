@@ -1,12 +1,14 @@
 package com.project.MgShare.controller.user;
 
 import com.project.MgShare.dto.user.RegisterDTO;
-import com.project.MgShare.model.user.UserEntity;
 import com.project.MgShare.service.user.UserService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RequiredArgsConstructor
 @Controller
@@ -14,9 +16,15 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/")
-    public String first() {
 
+    @GetMapping("/")
+    public String login() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String)) {
+            System.out.println("login中");
+            return "redirect:/user/main";
+        }
         return "login_page";
     }
 
@@ -34,16 +42,16 @@ public class UserController {
             return "redirect:/login";
     }
 
-    @GetMapping("/login")
-    public String login() {
-
-        return "login_page";
-    }
-
-    @GetMapping("/main")
+    @GetMapping("/user/main")
     public String loginPass() {
 
-        return "main_page";
+        return "/main_page";
+    }
+
+    @GetMapping("/user/myPage")
+    public  String myPage() {
+
+        return "my_page";
     }
 
 }
