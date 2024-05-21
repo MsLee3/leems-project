@@ -25,14 +25,14 @@
       <div class="card shadow-lg border-5 rounded-lg mt-5">
         <div class="card-header"><h3 class="text-center font-weight-light my-4">ログイン</h3></div>
         <div class="card-body">
-          <form class="needs-validation" novalidate>
+          <form class="needs-validation" novalidate id="loginForm" th:action="@{/login}" method="post">
             <div class="form-floating mb-3">
-              <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" required />
+              <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" name="userEmail" required />
               <label for="inputEmail">メールアドレス</label>
               <div class="invalid-feedback">メールアドレスを入力してください。</div>
             </div>
             <div class="form-floating mb-3">
-              <input class="form-control" id="inputPassword" type="password" placeholder="Password" required />
+              <input class="form-control" id="inputPassword" type="password" placeholder="Password" name="password" required />
               <label for="inputPassword">パスワード</label>
               <div class="invalid-feedback">パスワードを入力してください。</div>
             </div>
@@ -56,16 +56,17 @@
     var forms = document.querySelectorAll('.needs-validation')
 
     Array.prototype.slice.call(forms)
-      .forEach(function (form) {
-        form.addEventListener('submit', function (event) {
-          if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-          }
-          form.classList.add('was-validated')
-        }, false)
-      })
+            .forEach(function (form) {
+              form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                  event.preventDefault()
+                  event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+              }, false)
+            })
   })()
 </script>
 </body>
 </html>
+

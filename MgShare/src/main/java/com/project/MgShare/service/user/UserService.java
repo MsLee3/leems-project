@@ -14,13 +14,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public void  FindUserByEmail(String email) {
-        userRepository.findByEmail(email);
-    }
-
     public void UserRegisterSave(RegisterDTO registerDTO) {
 
-        boolean isUserExist = userRepository.existsUserEntitiesByEmail(registerDTO.getEmail());
+        boolean isUserExist = userRepository.existsUserEntitiesByUserEmail(registerDTO.getUserEmail());
 
         if (!registerDTO.getUsername().matches("^[^\\d]*$")) {
             throw new IllegalArgumentException("Invalid name");
@@ -30,7 +26,7 @@ public class UserService {
             throw new IllegalArgumentException("Invalid phone number");
         }
 
-        if (!registerDTO.getEmail().endsWith("@mirineglobal.com")) {
+        if (!registerDTO.getUserEmail().endsWith("@mirineglobal.com")) {
             throw new IllegalArgumentException("Invalid email domain");
         }
 
@@ -40,16 +36,17 @@ public class UserService {
 
         System.out.println(registerDTO.getUsername());
         System.out.println(registerDTO.getPassword());
-        System.out.println(registerDTO.getEmail());
+        System.out.println(registerDTO.getUserEmail());
         UserEntity data = new UserEntity();
 
         data.setUsername(registerDTO.getUsername());
         data.setPhoneNumber(registerDTO.getPhoneNumber());
-        data.setEmail(registerDTO.getEmail());
+        data.setUserEmail(registerDTO.getUserEmail());
         data.setPassword(bCryptPasswordEncoder.encode(registerDTO.getPassword()));
         data.setRole("ROLE_USER"); //権限設定
 
         userRepository.save(data);
     }
+
 
 }
