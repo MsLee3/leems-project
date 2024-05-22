@@ -27,15 +27,4 @@ public class RegisterDTO {
     //@Size(min = 6, message = "Password should be at least 6 characters")
     private String password;
 
-    public static RegisterDTO toRegisterDTO(UserEntity userEntity) {
-        RegisterDTO registerDTO = new RegisterDTO();
-
-        registerDTO.setUserEmail(userEntity.getUserEmail());
-        registerDTO.setUsername(userEntity.getUsername());
-        registerDTO.setPhoneNumber(userEntity.getPhoneNumber());
-        registerDTO.setPassword(userEntity.getPassword());
-
-        return registerDTO;
-    }
-
 }

@@ -1,6 +1,9 @@
 package com.project.MgShare.controller.user;
 
+import com.project.MgShare.dto.user.UserInfoDTO;
+import org.springframework.ui.Model;
 import com.project.MgShare.dto.user.RegisterDTO;
+import com.project.MgShare.model.user.UserEntity;
 import com.project.MgShare.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -16,8 +19,19 @@ public class UserController {
 
     private final UserService userService;
 
-
     @GetMapping("/")
+    public String First() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String)) {
+            System.out.println("login中");
+            return "redirect:/user/main";
+        }
+
+        return "login_page";
+    }
+
+    @GetMapping("/login")
     public String login() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -49,15 +63,15 @@ public class UserController {
     }
 
     @GetMapping("/user/myPage")
-    public  String myPage() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String)) {
-            System.out.println("login中");
+    public  String myPage(Model model) {
+
+        UserInfoDTO currentUser = userService.getCurrentUser();
+        if(currentUser != null) {
+
+            model.addAttribute("user", currentUser);
             return "my_page";
         }
-        return "redirect:/login";
+        return  "redirect:/user/login";
     }
-
-
 
 }

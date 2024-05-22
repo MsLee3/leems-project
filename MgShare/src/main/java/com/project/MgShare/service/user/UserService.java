@@ -1,9 +1,12 @@
 package com.project.MgShare.service.user;
 
 import com.project.MgShare.dto.user.RegisterDTO;
+import com.project.MgShare.dto.user.UserInfoDTO;
 import com.project.MgShare.model.user.UserEntity;
 import com.project.MgShare.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +51,27 @@ public class UserService {
         userRepository.save(data);
     }
 
+    public UserInfoDTO getCurrentUser() { //MyPage USER 確認
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !((authentication).getPrincipal() instanceof String)) {
+
+            String userEmail = authentication.getName();
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail).orElse(null);
+
+            if (userEntity != null) {
+
+                return toUserInfoDTO(userEntity);
+            }
+        }
+        return null;
+    }
+
+    private UserInfoDTO toUserInfoDTO(UserEntity userEntity) { //Entity -> DTO　変換
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setUsername(userEntity.getUsername());
+        userInfoDTO.setUserEmail(userEntity.getUserEmail());
+        userInfoDTO.setPhoneNumber(userEntity.getPhoneNumber());
+        return userInfoDTO;
+    }
 
 }
