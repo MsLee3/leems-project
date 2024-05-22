@@ -36,7 +36,7 @@ public class UserController {
     @GetMapping("/login")
     public String login() {
 
-        return "redirect:/";
+        return "login_page";
     }
 
     @GetMapping("/user/main")

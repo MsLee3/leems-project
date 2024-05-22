@@ -30,25 +30,26 @@
                         <div class="form-floating mb-3">
                             <input class="form-control" id="inputName" type="text" placeholder="氏名" name="username" autocomplete="off" required />
                             <label for="inputName">氏名</label>
-                            <div class="invalid-feedback">氏名を入力してください。</div>
+<!--                            <div class="invalid-feedback">氏名を入力してください。</div>-->
                             <div class="invalid-feedback" id="invalidNameFeedback" style="display: none;">数字を含めることはできません。</div>
                         </div>
                         <div class="form-floating mb-3">
                             <input class="form-control" id="inputPhoneNumber" type="tel" placeholder="電話番号" name="phoneNumber" autocomplete="off"  required />
                             <label for="inputPhoneNumber">電話番号</label>
-                            <div class="invalid-feedback">電話番号を入力してください。</div>
-                            <div class="invalid-feedback" id="invalidPhoneNumberFeedback" style="display: none;">有効な番号がないです。</div>
+<!--                            <div class="invalid-feedback">電話番号を入力してください。</div>-->
+                            <div class="invalid-feedback" id="invalidPhoneNumberFeedback" style="display: none;">数字のみで入力してください。</div>
                         </div>
                         <div class="form-floating mb-3">
                             <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" name="userEmail" autocomplete="username" required />
                             <label for="inputEmail">メール(ID)</label>
                             <!--<div class="invalid-feedback">メールアドレスを入力してください。</div>-->
-                            <div class="invalid-feedback" id="invalidEmailFeedback" style="display: none;">有効なメールアドレスではありません。</div>
+                            <div class="invalid-feedback" id="invalidEmailFeedback" style="display: none;">社内メールを利用してください。</div>
                         </div>
                         <div class="form-floating mb-3">
                             <input class="form-control" id="inputPassword" type="password" placeholder="Password" name="password" required />
                             <label for="inputPassword">パスワード</label>
                             <div class="invalid-feedback">パスワードを入力してください。</div>
+                            <div class="invalid-feedback" id="invalidFeedback" style="display: none;">パスワードを入力してください。</div>
                         </div>
                         <div class="d-flex justify-content-end mt-4 mb-0">
                             <button type="submit" class="btn btn-primary">登録</button>
@@ -74,21 +75,28 @@
             .forEach(function (form) {
                 form.addEventListener('submit', function (event) {
                     let nameInput = form.querySelector('#inputName');
-                    let phoneNumberInput = form.querySelector('#inputPhoneNumber');
-                    let emailInput = form.querySelector('#inputEmail');
-                    let name = nameInput.value;
-                    let phoneNumber = phoneNumberInput.value;
-                    let email = emailInput.value;
                     let nameFeedback = form.querySelector('#invalidNameFeedback');
+                    let name = nameInput.value;
+
+                    let phoneNumberInput = form.querySelector('#inputPhoneNumber');
                     let phoneNumberFeedback = form.querySelector('#invalidPhoneNumberFeedback');
+                    let phoneNumber = phoneNumberInput.value;
+
+                    let emailInput = form.querySelector('#inputEmail');
                     let emailFeedback = form.querySelector('#invalidEmailFeedback');
+                    let email = emailInput.value;
+
+                    let passwordInput = form.querySelector('#inputPassword');
+                    let passwordFeedback = form.querySelector('#invalidPasswordFeedback');
+                    let password = passwordInput.value;
 
                     // Validation patterns
-                    let validName = /^[a-zA-Z\s\u4E00-\u9FFF\uAC00-\uD7A3\u3040-\u309F\u30A0-\u30FF]+$/.test(name);// No digits allowed
-                    let validPhoneNumber = /^[0-9]+$/.test(phoneNumber); // Only digits and dashes allowed
+                    let validName = /^[a-zA-Z\s\u4E00-\u9FFF\uAC00-\uD7A3\u3040-\u309F\u30A0-\u30FF]+$/.test(name); // No digits allowed
+                    let validPhoneNumber = /^[0-9]+$/.test(phoneNumber); // Only digits allowed
                     let validEmail = email.endsWith('@mirineglobal.com');
+                    let validPassword = password.trim() !== ''; // Check if password is not empty
 
-                    if (!form.checkValidity() || !validName || !validPhoneNumber || !validEmail) {
+                    if (!form.checkValidity() || !validName || !validPhoneNumber || !validEmail || !validPassword) {
                         event.preventDefault();
                         event.stopPropagation();
 
@@ -115,13 +123,22 @@
                             emailInput.classList.remove('is-invalid');
                             emailFeedback.style.display = 'none';
                         }
+
+                        if (!validPassword) {
+                            passwordInput.classList.add('is-invalid');
+                            passwordFeedback.style.display = 'block';
+                        } else {
+                            passwordInput.classList.remove('is-invalid');
+                            passwordFeedback.style.display = 'none';
+                        }
                     } else {
                         alert("登録が完了しました。");
                         form.classList.add('was-validated');
                     }
                 }, false);
             })
-    })()
+    })();
+
 </script>
 </body>
 </html>

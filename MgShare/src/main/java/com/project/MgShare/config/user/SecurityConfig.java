@@ -39,7 +39,9 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .usernameParameter("userEmail")
                         .defaultSuccessUrl("/user/main",true) //1st true
+                        .failureUrl("/login?error=ture")
                         .permitAll()
+
                 );
 
         httpSecurity

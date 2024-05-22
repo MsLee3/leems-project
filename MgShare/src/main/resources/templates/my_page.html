@@ -76,7 +76,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">戻る</button>
         <button type="button" class="btn btn-primary" onclick="updateUserInfo()">保存</button>
       </div>
     </div>
@@ -94,7 +94,7 @@
         本当に会員脱退しますか？
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">戻る</button>
         <button type="button" class="btn btn-danger" onclick="deleteUser()">脱退</button>
       </div>
     </div>
@@ -150,8 +150,7 @@
     const phoneNumber = document.getElementById('updatePhoneNumber').value;
     const password = document.getElementById('updatePassword').value;
 
-    // 유효성 검사
-    const validName = /^[a-zA-Z\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7A3\s]+$/.test(name); // 영어, 한자, 히라가나, 가타카나, 한글
+    const validName = /^[a-zA-Z\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7A3\s]+$/.test(name);
     const validPhoneNumber = /^[0-9]+$/.test(phoneNumber); // 오직 숫자만
     const validEmail = email.endsWith('@mirineglobal.com'); // 지정된 도메인
 
@@ -214,7 +213,6 @@
               alert('エラーが発生しました。');
             });
   }
-
 </script>
 </body>
 </html>
