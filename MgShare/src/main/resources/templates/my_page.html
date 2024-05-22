@@ -11,15 +11,14 @@
 </head>
 <body>
 <!-- Navigation bar with content -->
-<nav class="navbar navbar-dark bg-dark">  <!--navbar-expand-lg-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand" href="#!">MG Share</a>
+    <a class="navbar-brand" href="/user/main">MG Share</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="#!">メインページ</a></li>
-        <li class="nav-item"><a class="nav-link small text-muted" href="#!">ログアウト</a></li>
-        <!--<li class="nav-item"><a class="nav-link" href="#!">ログアウト</a></li>-->
+        <li class="nav-item"><a class="nav-link" href="/user/main">メインページ</a></li>
+        <li class="nav-item"><a class="nav-link small text-muted" href="/user/logout">ログアウト</a></li>
       </ul>
     </div>
   </div>
@@ -34,16 +33,65 @@
           <h4 class="mb-3">会員情報</h4>
           <p>名前: 田中 太郎</p>
           <p>メールアドレス: tanaka@example.com</p>
-          <p>登録日: 2023年1月1日</p>
+          <p>電話番号: 080-2222-3333</p>
           <div class="mb-3">
-            <button type="button" class="btn btn-primary">情報を更新</button>
-            <button type="button" class="btn btn-danger">会員脱退</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">情報を更新</button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">会員脱退</button>
           </div>
           <h4 class="mt-5 mb-3">貸出履歴</h4>
           <ul class="list-group" id="loanHistory">
             <!-- JavaScript로 대출 목록을 동적으로 추가 -->
           </ul>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Update Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateModalLabel">情報を更新</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="updateForm">
+          <div class="mb-3">
+            <label for="updateName" class="form-label">名前</label>
+            <input type="text" class="form-control" id="updateName" required>
+          </div>
+          <div class="mb-3">
+            <label for="updateEmail" class="form-label">メールアドレス</label>
+            <input type="email" class="form-control" id="updateEmail" required>
+          </div>
+          <div class="mb-3">
+            <label for="updatePhoneNumber" class="form-label">電話番号</label>
+            <input type="tel" class="form-control" id="updatePhoneNumber" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+        <button type="button" class="btn btn-primary" onclick="updateUserInfo()">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">会員脱退</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        本当に会員脱退しますか？
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+        <button type="button" class="btn btn-danger" onclick="deleteUser()">脱退</button>
       </div>
     </div>
   </div>
@@ -89,6 +137,33 @@
 
     // 신청 완료 메시지 표시
     alert("返却申請が完了しました。");
+  }
+
+  function updateUserInfo() {
+    // 사용자 정보 업데이트 로직을 여기에 추가
+    const name = document.getElementById('updateName').value;
+    const email = document.getElementById('updateEmail').value;
+    const phoneNumber = document.getElementById('updatePhoneNumber').value;
+
+    // 예제에서는 콘솔에 출력
+    console.log('Updated User Info:', { name, email, phoneNumber });
+
+    // 모달 닫기
+    const updateModal = new bootstrap.Modal(document.getElementById('updateModal'));
+    updateModal.hide();
+
+    alert('情報が更新されました。');
+  }
+
+  function deleteUser() {
+    // 사용자 탈퇴 로직을 여기에 추가
+    console.log('User Deleted');
+
+    // 모달 닫기
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    deleteModal.hide();
+
+    alert('会員脱退が完了しました。');
   }
 </script>
 </body>

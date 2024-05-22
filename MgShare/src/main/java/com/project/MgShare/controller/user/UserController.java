@@ -28,6 +28,12 @@ public class UserController {
         return "login_page";
     }
 
+    @GetMapping("/user/main")
+    public String loginPass() {
+
+        return "/main_page";
+    }
+
     @GetMapping("/register") //会員登録
     public String register() {
 
@@ -42,16 +48,16 @@ public class UserController {
             return "redirect:/login";
     }
 
-    @GetMapping("/user/main")
-    public String loginPass() {
-
-        return "/main_page";
-    }
-
     @GetMapping("/user/myPage")
     public  String myPage() {
-
-        return "my_page";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String)) {
+            System.out.println("login中");
+            return "my_page";
+        }
+        return "redirect:/login";
     }
+
+
 
 }
