@@ -36,12 +36,7 @@ public class UserController {
     @GetMapping("/login")
     public String login() {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String)) {
-            System.out.println("login中");
-            return "redirect:/user/main";
-        }
-        return "login_page";
+        return "redirect:/";
     }
 
     @GetMapping("/user/main")

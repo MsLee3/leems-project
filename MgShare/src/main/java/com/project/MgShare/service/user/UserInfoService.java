@@ -50,6 +50,15 @@ public class UserInfoService {
         }
     }
 
+    public void deleteUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String)) {
+            String userEmail = authentication.getName();
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail).orElseThrow(() -> new IllegalArgumentException("User not found"));
+            userRepository.delete(userEntity);
+        }
+    }
+
     private UserInfoDTO toUserInfoDTO(UserEntity userEntity) { //Entity -> DTO　変換
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUsername(userEntity.getUsername());

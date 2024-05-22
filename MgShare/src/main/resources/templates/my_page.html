@@ -194,6 +194,27 @@
               alert('エラーが発生しました。');
             });
   }
+
+  function deleteUser() {
+    fetch('/user/delete', {
+      method: 'POST',
+    })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                alert('会員脱退が完了しました。');
+                // 페이지 새로고침 또는 로그아웃
+                window.location.href = '/user/logout';
+              } else {
+                alert('脱退に失敗しました。');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('エラーが発生しました。');
+            });
+  }
+
 </script>
 </body>
 </html>

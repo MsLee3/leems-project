@@ -29,7 +29,7 @@ public class UserInfoController {
             model.addAttribute("user", currentUser);
             return "my_page";
         }
-        return  "redirect:/user/login";
+        return  "redirect:/login";
     }
 
     @PostMapping("/user/update")
@@ -53,5 +53,20 @@ public class UserInfoController {
         }
         return response;
     }
+
+    @PostMapping("/user/delete")
+    @ResponseBody
+    public Map<String, Object> deleteUser() {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            userInfoService.deleteUser();
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+        }
+        return response;
+    }
+
 
 }
