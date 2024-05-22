@@ -27,8 +27,8 @@
         <div class="card-body">
           <form class="needs-validation" novalidate id="loginForm" th:action="@{/login}" method="post">
             <div class="form-floating mb-3">
-              <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" name="userEmail" required />
-              <label for="inputEmail">メールアドレス</label>
+              <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" name="userEmail" autocomplete="email" required />
+              <label for="inputEmail">メール</label>
               <div class="invalid-feedback">メールアドレスを入力してください。</div>
             </div>
             <div class="form-floating mb-3">

@@ -13,7 +13,7 @@
 <!-- Navigation bar with content -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#!">MG Share</a>
+        <a class="navbar-brand" href="/">MG Share</a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto"></ul>
         </div>
@@ -28,22 +28,22 @@
                 <div class="card-body">
                     <form class="needs-validation" novalidate id="registrationForm" action="/register/save" method="post">
                         <div class="form-floating mb-3">
-                            <input class="form-control" id="inputName" type="text" placeholder="名前" name="username" required />
-                            <label for="inputName">姓名</label>
-                            <div class="invalid-feedback">姓名を入力してください。</div>
-                            <div class="invalid-feedback" id="invalidNameFeedback" style="display: none;">名前に数字を含めることはできません。</div>
+                            <input class="form-control" id="inputName" type="text" placeholder="氏名" name="username" autocomplete="off" required />
+                            <label for="inputName">氏名</label>
+                            <div class="invalid-feedback">氏名を入力してください。</div>
+                            <div class="invalid-feedback" id="invalidNameFeedback" style="display: none;">数字を含めることはできません。</div>
                         </div>
                         <div class="form-floating mb-3">
-                            <input class="form-control" id="inputPhoneNumber" type="tel" placeholder="電話番号" name="phoneNumber" required />
+                            <input class="form-control" id="inputPhoneNumber" type="tel" placeholder="電話番号" name="phoneNumber" autocomplete="off"  required />
                             <label for="inputPhoneNumber">電話番号</label>
                             <div class="invalid-feedback">電話番号を入力してください。</div>
                             <div class="invalid-feedback" id="invalidPhoneNumberFeedback" style="display: none;">有効な番号がないです。</div>
                         </div>
                         <div class="form-floating mb-3">
-                            <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" name="email" required />
-                            <label for="inputEmail">メールアドレス</label>
-                            <div class="invalid-feedback">メールアドレスを入力してください。</div>
-                            <div class="invalid-feedback" id="invalidEmailFeedback" style="display: none;">有効なメールアドレスがないです。</div>
+                            <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" name="userEmail" autocomplete="username" required />
+                            <label for="inputEmail">メール(ID)</label>
+                            <!--<div class="invalid-feedback">メールアドレスを入力してください。</div>-->
+                            <div class="invalid-feedback" id="invalidEmailFeedback" style="display: none;">有効なメールアドレスではありません。</div>
                         </div>
                         <div class="form-floating mb-3">
                             <input class="form-control" id="inputPassword" type="password" placeholder="Password" name="password" required />
@@ -84,7 +84,7 @@
                     let emailFeedback = form.querySelector('#invalidEmailFeedback');
 
                     // Validation patterns
-                    let validName = /^[^\d]*$/.test(name); // No digits allowed
+                    let validName = /^[a-zA-Z\s\u4E00-\u9FFF]+$/.test(name);// No digits allowed
                     let validPhoneNumber = /^[0-9]+$/.test(phoneNumber); // Only digits and dashes allowed
                     let validEmail = email.endsWith('@mirineglobal.com');
 
@@ -115,9 +115,10 @@
                             emailInput.classList.remove('is-invalid');
                             emailFeedback.style.display = 'none';
                         }
+                    } else {
+                        alert("登録が完了しました。");
+                        form.classList.add('was-validated');
                     }
-
-                    form.classList.add('was-validated');
                 }, false);
             })
     })()

@@ -56,18 +56,22 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="updateForm">
+        <form id="updateForm" action="/user/update">
           <div class="mb-3">
             <label for="updateName" class="form-label">氏名</label>
-            <input type="text" class="form-control" id="updateName" required>
+            <input type="text" class="form-control" id="updateName" name="username" required>
           </div>
           <div class="mb-3">
-            <label for="updateEmail" class="form-label">メールアドレス</label>
-            <input type="email" class="form-control" id="updateEmail" required>
+            <label for="updateEmail" class="form-label" > メール</label>
+            <input type="email" class="form-control" id="updateEmail" name="userEmail" autocomplete="username" required>
           </div>
           <div class="mb-3">
             <label for="updatePhoneNumber" class="form-label">電話番号</label>
-            <input type="tel" class="form-control" id="updatePhoneNumber" required>
+            <input type="tel" class="form-control" id="updatePhoneNumber" name="phoneNumber" required>
+          </div>
+          <div class="mb-3">
+            <label for="updatePassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="updatePassword" name="password">
           </div>
         </form>
       </div>
@@ -140,30 +144,55 @@
   }
 
   function updateUserInfo() {
-    // 사용자 정보 업데이트 로직을 여기에 추가
+    const form = document.getElementById('updateForm');
     const name = document.getElementById('updateName').value;
     const email = document.getElementById('updateEmail').value;
     const phoneNumber = document.getElementById('updatePhoneNumber').value;
+    const password = document.getElementById('updatePassword').value;
 
-    // 예제에서는 콘솔에 출력
-    console.log('Updated User Info:', { name, email, phoneNumber });
+    // 유효성 검사
+    const validName = /^[a-zA-Z\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7A3\s]+$/.test(name); // 영어, 한자, 히라가나, 가타카나, 한글
+    const validPhoneNumber = /^[0-9]+$/.test(phoneNumber); // 오직 숫자만
+    const validEmail = email.endsWith('@mirineglobal.com'); // 지정된 도메인
 
-    // 모달 닫기
-    const updateModal = new bootstrap.Modal(document.getElementById('updateModal'));
-    updateModal.hide();
+    if (!validName) {
+      alert('名前には数字や特殊文字を含めることはできません。');
+      return;
+    }
+    if (!validPhoneNumber) {
+      alert('電話番号は数字のみを含めることができます。');
+      return;
+    }
+    if (!validEmail) {
+      alert('社内メールを入力してください。');
+      return;
+    }
 
-    alert('情報が更新されました。');
-  }
+    const formData = new FormData(form);
 
-  function deleteUser() {
-    // 사용자 탈퇴 로직을 여기에 추가
-    console.log('User Deleted');
+    fetch('/user/update', {
+      method: 'POST',
+      body: formData,
+    })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                alert('情報が更新されました。');
+                // 모달 닫기
+                const updateModalElement = document.getElementById('updateModal');
+                const updateModal = bootstrap.Modal.getInstance(updateModalElement);
+                updateModal.hide();
 
-    // 모달 닫기
-    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-    deleteModal.hide();
-
-    alert('会員脱退が完了しました。');
+                // 페이지 새로고침
+                window.location.reload();
+              } else {
+                alert('更新に失敗しました。');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('エラーが発生しました。');
+            });
   }
 </script>
 </body>

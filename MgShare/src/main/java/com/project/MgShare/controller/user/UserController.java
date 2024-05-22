@@ -1,6 +1,7 @@
 package com.project.MgShare.controller.user;
 
 import com.project.MgShare.dto.user.UserInfoDTO;
+import com.project.MgShare.service.user.UserInfoService;
 import org.springframework.ui.Model;
 import com.project.MgShare.dto.user.RegisterDTO;
 import com.project.MgShare.model.user.UserEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UserController {
 
     private final UserService userService;
+    private final UserInfoService userInfoService;
 
     @GetMapping("/")
     public String First() {
@@ -61,17 +63,4 @@ public class UserController {
 
             return "redirect:/login";
     }
-
-    @GetMapping("/user/myPage")
-    public  String myPage(Model model) {
-
-        UserInfoDTO currentUser = userService.getCurrentUser();
-        if(currentUser != null) {
-
-            model.addAttribute("user", currentUser);
-            return "my_page";
-        }
-        return  "redirect:/user/login";
-    }
-
 }

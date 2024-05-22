@@ -17,5 +17,7 @@ public class UserInfoDTO {
 
     private String phoneNumber;
 
+    private String password;
+
 
 }
