@@ -58,4 +58,10 @@ public class UserController {
 
             return "redirect:/login";
     }
-}
+
+    @GetMapping("/user/list")
+    public String checkList() {
+
+        return "list_page";
+    }
+ }

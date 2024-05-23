@@ -17,7 +17,9 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="/user/main">メインページ</a></li>
+        <li class="nav-item"><a class="nav-link" href="/user/main">貸与申請</a></li>
+        <li class="nav-item"><a class="nav-link" href="/user/list">返却申請</a></li>
+        <li class="nav-item"><a class="nav-link" href="/user/myPage">マイページ</a></li>
         <li class="nav-item"><a class="nav-link small text-muted" href="/user/logout">ログアウト</a></li>
       </ul>
     </div>
@@ -37,15 +39,11 @@
           <div class="mb-3">
             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal">情報を更新</button>
             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">会員脱退</button>
-          </div>
-          <h4 class="mt-5 mb-3">貸出履歴</h4>
-          <ul class="list-group" id="loanHistory">
-            <!-- JavaScript로 대출 목록을 동적으로 추가 -->
-          </ul>
         </div>
       </div>
     </div>
   </div>
+</div>
 </div>
 <!-- Update Modal -->
 <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
@@ -105,61 +103,24 @@
 <!-- Core theme JS-->
 <script src="js/scripts.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    loadLoanHistory();
-  });
-
-  function loadLoanHistory() {
-    // 나중에 서버에서 데이터를 가져와서 사용할 수 있도록 설정
-    // 현재는 예제 데이터로 대체
-    const loanData = [
-      { itemName: "書籍「ビジネスの基礎」", startDate: "2023.5.10", endDate: "2023.5.20" },
-      { itemName: "書籍「マーケティング入門」", startDate: "2023.6.1", endDate: "2023.6.10" },
-    ];
-
-    const loanHistory = document.getElementById("loanHistory");
-    loanHistory.innerHTML = ""; // 이전 데이터를 초기화
-
-    loanData.forEach(loan => {
-      const listItem = document.createElement("li");
-      listItem.className = "list-group-item d-flex justify-content-between align-items-center";
-      listItem.innerHTML = `
-        ${loan.itemName} - ${loan.startDate} ~ ${loan.endDate}
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="requestReturn(this)">返却申請</button>
-      `;
-      loanHistory.appendChild(listItem);
-    });
-  }
-
-  function requestReturn(button) {
-    // 반납 신청 로직을 구현
-    // 예제에서는 버튼 텍스트 변경으로 대체
-    button.textContent = "返却申請完了";
-    button.classList.remove("btn-outline-secondary");
-    button.classList.add("btn-success");
-    button.disabled = true;
-
-    // 신청 완료 메시지 표시
-    alert("返却申請が完了しました。");
-  }
 
   function updateUserInfo() {
     const form = document.getElementById('updateForm');
     const name = document.getElementById('updateName').value;
     const email = document.getElementById('updateEmail').value;
     const phoneNumber = document.getElementById('updatePhoneNumber').value;
-    const password = document.getElementById('updatePassword').value;
+    // const password = document.getElementById('updatePassword').value;
 
     const validName = /^[a-zA-Z\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7A3\s]+$/.test(name);
     const validPhoneNumber = /^[0-9]+$/.test(phoneNumber); // 오직 숫자만
     const validEmail = email.endsWith('@mirineglobal.com'); // 지정된 도메인
 
     if (!validName) {
-      alert('名前には数字や特殊文字を含めることはできません。');
+      alert('氏名を正しく入力してください。');
       return;
     }
     if (!validPhoneNumber) {
-      alert('電話番号は数字のみを含めることができます。');
+      alert('電話番号を正しく入力してください。');
       return;
     }
     if (!validEmail) {

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>貸出履歴 - MG_Share</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="styles.css" rel="stylesheet" />
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* 페이지 전체 스크롤 비활성화 */
+        }
+
+        .card {
+            width: 100%;
+            height: 70%; /* 카드의 높이를 70%로 설정 */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-body {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            overflow-y: auto; /* 카드 본문 스크롤 활성화 */
+            flex-grow: 1; /* 카드 본문이 나머지 공간을 차지하도록 설정 */
+        }
+        .navbar, .card-body h4, .table thead tr {
+            position: sticky;
+            top: 0;
+            z-index: 1000; /* 상단에 고정 */
+            background-color: white; /* 배경색 설정 */
+        }
+        .card-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000; /* 상단에 고정 */
+        }
+        .table-responsive {
+            height: calc(100% - 50px); /* 고정된 테이블 헤더를 제외한 높이 설정 */
+        }
+        .table {
+            text-align-last: center;
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">MG Share</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/user/main">貸与申請</a></li>
+                <li class="nav-item"><a class="nav-link" href="/user/list">返却申請</a></li>
+                <li class="nav-item"><a class="nav-link" href="/user/myPage">マイページ</a></li>
+                <li class="nav-item"><a class="nav-link text-muted" href="/user/logout">ログアウト</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Loan History Page Content -->
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="card shadow-lg border-5 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">貸出履歴</h3></div>
+                <div class="card-body" style="min-height: 500px;">
+                    <h4 class="mb-1">リスト</h4>
+                    <div class="table-responsive" style="max-height: 700px;">
+                        <table class="table table-hover" id="loanHistoryTable">
+                            <thead>
+                            <tr>
+                                <th>商品名</th>
+                                <th>期間</th>
+                                <th>数量</th>
+                                <th>返却申請</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- JavaScript를 통해 서버 데이터로 동적으로 채워짐 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        loadLoanHistory();
+    });
+
+    function loadLoanHistory() {
+        // 나중에 서버에서 데이터를 가져와서 사용할 수 있도록 설정
+        // 현재는 예제 데이터로 대체
+        const loanData = [
+            { itemName: "書籍「ビジネスの基礎」", period: "2023.5.10 - 2023.5.20", quantity: 1, returnDate: "2023-05-20" },
+            { itemName: "書籍「マーケティング入門」", period: "2023.6.1 - 2023.6.10", quantity: 2, returnDate: "2023-06-10" },
+        ];
+
+        // 반납 기간이 지난 물품을 위로 정렬
+        const now = new Date();
+        loanData.sort((a, b) => new Date(a.returnDate) - new Date(b.returnDate));
+        const overdueLoans = loanData.filter(loan => new Date(loan.returnDate) < now);
+        const normalLoans = loanData.filter(loan => new Date(loan.returnDate) >= now);
+
+        const sortedLoanData = [...overdueLoans, ...normalLoans];
+
+        const loanHistoryTableBody = document.querySelector("#loanHistoryTable tbody");
+        loanHistoryTableBody.innerHTML = ""; // 이전 데이터를 초기화
+
+        sortedLoanData.forEach(loan => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+        <td>${loan.itemName}</td>
+        <td>${loan.period}</td>
+        <td>${loan.quantity}</td>
+        <td><button type="button" class="btn btn-sm btn-outline-secondary" onclick="requestReturn(this)">返却申請</button></td>
+      `;
+            loanHistoryTableBody.appendChild(row);
+        });
+    }
+
+    function requestReturn(button) {
+        // 반납 신청 로직을 구현
+        // 예제에서는 버튼 텍스트 변경으로 대체
+        button.textContent = "返却申請完了";
+        button.classList.remove("btn-outline-secondary");
+        button.classList.add("btn-success");
+        button.disabled = true;
+
+        // 신청 완료 메시지 표시
+        alert("返却申請が完了しました。");
+    }
+</script>
+</body>
+</html>
