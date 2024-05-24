@@ -1,6 +1,5 @@
 package com.project.MgShare.service.user;
 
-import com.project.MgShare.dto.user.RegisterDTO;
 import com.project.MgShare.dto.user.UserInfoDTO;
 import com.project.MgShare.model.user.UserEntity;
 import com.project.MgShare.repository.user.UserRepository;
@@ -71,8 +70,6 @@ public class UserInfoService {
         }
     }
 
-
-
     private UserInfoDTO toUserInfoDTO(UserEntity userEntity) { //Entity -> DTO　変換
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUsername(userEntity.getUsername());
@@ -80,5 +77,4 @@ public class UserInfoService {
         userInfoDTO.setPhoneNumber(userEntity.getPhoneNumber());
         return userInfoDTO;
     }
-
 }

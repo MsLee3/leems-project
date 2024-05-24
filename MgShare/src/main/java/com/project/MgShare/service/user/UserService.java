@@ -18,7 +18,7 @@ public class UserService {
 
         boolean isUserExist = userRepository.existsUserEntitiesByUserEmail(registerDTO.getUserEmail());
 
-        if (!registerDTO.getUsername().matches("^[a-zA-Z\\s\u4E00-\u9FFF\uAC00-\uD7A3\u3040-\u309F\u30A0-\u30FF]+$")) {
+        if (!registerDTO.getUsername().matches("^[a-zA-Z\\s一-\u9FFF가-힣\u3040-ゟ゠-ヿ]+$")) {
             throw new IllegalArgumentException("Invalid name");
         }
 

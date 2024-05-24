@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class UserSecurityService implements UserDetailsService {
         UserEntity userEntity = _userEntity.get();
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if("admin".equals(userEmail)) {
+        if("admin@mirineglobal.com".equals(userEmail)) {
             authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
         }
         else {
@@ -42,5 +43,14 @@ public class UserSecurityService implements UserDetailsService {
         }
 
         return new User(userEntity.getUserEmail(), userEntity.getPassword(), authorities);
+    }
+
+    public static class BCryptHashGenerator {
+        public static void main(String[] args) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String rawPassword = "adminPassword";
+            String encodedPassword = passwordEncoder.encode(rawPassword);
+            System.out.println(encodedPassword);
+        }
     }
 }

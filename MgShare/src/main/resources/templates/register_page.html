@@ -74,6 +74,9 @@
         Array.prototype.slice.call(forms)
             .forEach(function (form) {
                 form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+
                     let nameInput = form.querySelector('#inputName');
                     let nameFeedback = form.querySelector('#invalidNameFeedback');
                     let name = nameInput.value;
@@ -97,9 +100,6 @@
                     let validPassword = password.trim() !== ''; // Check if password is not empty
 
                     if (!form.checkValidity() || !validName || !validPhoneNumber || !validEmail || !validPassword) {
-                        event.preventDefault();
-                        event.stopPropagation();
-
                         if (!validName) {
                             nameInput.classList.add('is-invalid');
                             nameFeedback.style.display = 'block';
@@ -131,14 +131,33 @@
                             passwordInput.classList.remove('is-invalid');
                             passwordFeedback.style.display = 'none';
                         }
-                    } else {
-                        alert("登録が完了しました。");
-                        form.classList.add('was-validated');
+
+                        return;
                     }
+
+                    // 서버로 데이터 전송
+                    let formData = new FormData(form);
+                    fetch('/register', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("登録が完了しました。");
+                                form.classList.add('was-validated');
+                            } else {
+                                alert("エラーが発生しました: " + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            window.location.reload();
+                            alert('会員登録ができません。メールをチェックしてください。');
+                        });
                 }, false);
             })
     })();
-
 </script>
 </body>
 </html>

@@ -17,10 +17,10 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="/user/main">貸与申請</a></li>
-        <li class="nav-item"><a class="nav-link" href="/user/list">返却申請</a></li>
+        <li class="nav-item"><a class="nav-link" href="/user/main">貸出申請</a></li>
+        <li class="nav-item"><a class="nav-link" href="/user/return">返却＆履歴</a></li>
         <li class="nav-item"><a class="nav-link" href="/user/myPage">マイページ</a></li>
-        <li class="nav-item"><a class="nav-link small text-muted" href="/user/logout">ログアウト</a></li>
+        <li class="nav-item "><a class="nav-link small text-muted" href="/user/logout">ログアウト</a></li>
       </ul>
     </div>
   </div>
@@ -28,7 +28,7 @@
 <!-- My Page Content -->
 <div class="container my-5">
   <div class="row justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-lg-8" style="width: 600px">
       <div class="card shadow-lg border-5 rounded-lg mt-5">
         <div class="card-header"><h3 class="text-center font-weight-light my-4">マイページ</h3></div>
         <div class="card-body">
@@ -134,7 +134,7 @@
     }
 
     // 서버에 현재 비밀번호 확인 요청 보내기
-    fetch('/user/confirm-password', {
+    fetch('/user/confirmPassword', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
