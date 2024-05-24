@@ -129,7 +129,7 @@
   function confirmPassword() {
     const currentPassword = document.getElementById('currentPassword').value;
     if (currentPassword.trim() === '') {
-      alert('現在のパスワードを入力してください。');
+      alert('パスワードを入力してください。');
       return;
     }
 
@@ -147,7 +147,7 @@
                 // 비밀번호가 확인되면 업데이트 모달 열기
                 showUpdateModal();
               } else {
-                alert('現在のパスワードが正しくありません。');
+                alert('パスワードが正しくありません。');
               }
             })
             .catch(error => {

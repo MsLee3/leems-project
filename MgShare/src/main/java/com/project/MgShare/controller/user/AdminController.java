@@ -14,7 +14,7 @@ public class AdminController {
     @GetMapping("/userList")
     public String userList() {
 
-        return "user_admin";
+        return "item_admin";
     }
 
 }
