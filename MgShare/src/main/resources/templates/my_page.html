@@ -37,13 +37,36 @@
           <p>メール: <span th:text="${user.userEmail}">tanaka@example.com</span></p>
           <p>電話番号: <span th:text="${user.phoneNumber}">080-2222-3333</span></p>
           <div class="mb-3">
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal">情報を更新</button>
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#passwordModal">情報を更新</button>
             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">会員脱退</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<!-- Password Confirmation Modal -->
+<div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="passwordModalLabel">現在のパスワードを確認</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="passwordForm">
+          <div class="mb-3">
+            <label for="currentPassword" class="form-label">現在のパスワード</label>
+            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">戻る</button>
+        <button type="button" class="btn btn-primary" onclick="confirmPassword()">確認</button>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- Update Modal -->
 <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
@@ -54,13 +77,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="updateForm" action="/user/update">
+        <form id="updateForm">
           <div class="mb-3">
             <label for="updateName" class="form-label">氏名</label>
             <input type="text" class="form-control" id="updateName" name="username" required>
           </div>
           <div class="mb-3">
-            <label for="updateEmail" class="form-label" > メール</label>
+            <label for="updateEmail" class="form-label">メール</label>
             <input type="email" class="form-control" id="updateEmail" name="userEmail" autocomplete="username" required>
           </div>
           <div class="mb-3">
@@ -103,17 +126,55 @@
 <!-- Core theme JS-->
 <script src="js/scripts.js"></script>
 <script>
+  function confirmPassword() {
+    const currentPassword = document.getElementById('currentPassword').value;
+    if (currentPassword.trim() === '') {
+      alert('現在のパスワードを入力してください。');
+      return;
+    }
+
+    // 서버에 현재 비밀번호 확인 요청 보내기
+    fetch('/user/confirm-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ currentPassword }),
+    })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                // 비밀번호가 확인되면 업데이트 모달 열기
+                showUpdateModal();
+              } else {
+                alert('現在のパスワードが正しくありません。');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('エラーが発生しました。');
+            });
+  }
+
+  function showUpdateModal() {
+    const passwordModalElement = document.getElementById('passwordModal');
+    const passwordModal = bootstrap.Modal.getInstance(passwordModalElement);
+    passwordModal.hide();
+
+    const updateModal = new bootstrap.Modal(document.getElementById('updateModal'));
+    updateModal.show();
+  }
 
   function updateUserInfo() {
     const form = document.getElementById('updateForm');
     const name = document.getElementById('updateName').value;
     const email = document.getElementById('updateEmail').value;
     const phoneNumber = document.getElementById('updatePhoneNumber').value;
-    // const password = document.getElementById('updatePassword').value;
+    const password = document.getElementById('updatePassword').value;
 
     const validName = /^[a-zA-Z\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7A3\s]+$/.test(name);
-    const validPhoneNumber = /^[0-9]+$/.test(phoneNumber); // 오직 숫자만
-    const validEmail = email.endsWith('@mirineglobal.com'); // 지정된 도메인
+    const validPhoneNumber = /^[0-9]+$/.test(phoneNumber);
+    const validEmail = email.endsWith('@mirineglobal.com');
 
     if (!validName) {
       alert('氏名を正しく入力してください。');
@@ -138,12 +199,10 @@
             .then(data => {
               if (data.success) {
                 alert('情報が更新されました。');
-                // 모달 닫기
                 const updateModalElement = document.getElementById('updateModal');
                 const updateModal = bootstrap.Modal.getInstance(updateModalElement);
                 updateModal.hide();
 
-                // 페이지 새로고침
                 window.location.reload();
               } else {
                 alert('更新に失敗しました。');
@@ -163,7 +222,6 @@
             .then(data => {
               if (data.success) {
                 alert('会員脱退が完了しました。');
-                // 페이지 새로고침 또는 로그아웃
                 window.location.href = '/user/logout';
               } else {
                 alert('脱退に失敗しました。');

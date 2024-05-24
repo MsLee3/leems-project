@@ -32,7 +32,19 @@ public class UserInfoService {
         return null;
     }
 
-    public void updateUserInfo(UserInfoDTO userInfoDTO) {
+    public boolean confirmCurrentPassword(String currentPassword) { //confirm curren PW
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String)) {
+            String userEmail = authentication.getName();
+            UserEntity userEntity = userRepository.findByUserEmail(userEmail).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+            return bCryptPasswordEncoder.matches(currentPassword, userEntity.getPassword());
+        }
+        return false;
+    }
+
+
+    public void updateUserInfo(UserInfoDTO userInfoDTO) { //userの情報更新
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String)) {
             String userEmail = authentication.getName();
@@ -50,7 +62,7 @@ public class UserInfoService {
         }
     }
 
-    public void deleteUser() {
+    public void deleteUser() { //userの情報削除
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String)) {
             String userEmail = authentication.getName();
@@ -58,6 +70,8 @@ public class UserInfoService {
             userRepository.delete(userEntity);
         }
     }
+
+
 
     private UserInfoDTO toUserInfoDTO(UserEntity userEntity) { //Entity -> DTO　変換
         UserInfoDTO userInfoDTO = new UserInfoDTO();

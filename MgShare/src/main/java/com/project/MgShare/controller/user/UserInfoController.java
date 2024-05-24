@@ -68,5 +68,16 @@ public class UserInfoController {
         return response;
     }
 
+    @PostMapping("/user/confirm-password")
+    @ResponseBody
+    public Map<String, Object> confirmPassword(@RequestBody Map<String, String> request) {
+        Map<String, Object> response = new HashMap<>();
+        String currentPassword = request.get("currentPassword");
+        boolean isPasswordValid = userInfoService.confirmCurrentPassword(currentPassword);
+
+        response.put("success", isPasswordValid);
+        return response;
+    }
+
 
 }

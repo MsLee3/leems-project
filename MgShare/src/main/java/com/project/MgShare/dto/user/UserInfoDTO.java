@@ -1,6 +1,7 @@
 package com.project.MgShare.dto.user;
 
 import com.project.MgShare.model.user.UserEntity;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,8 @@ public class UserInfoDTO {
     private String userEmail;
 
     private String phoneNumber;
+
+    private String currentPassword;
 
     private String password;
 

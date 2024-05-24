@@ -22,7 +22,7 @@ public class UserSecurityService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    @Override
+    @Override //login method
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
 
         Optional<UserEntity> _userEntity = this.userRepository.findByUserEmail(userEmail);
