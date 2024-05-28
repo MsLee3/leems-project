@@ -2,23 +2,20 @@ package com.project.MgShare.controller.user;
 
 import com.project.MgShare.dto.user.UserInfoDTO;
 import com.project.MgShare.service.user.UserInfoService;
-import com.project.MgShare.config.user.SecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
-@Import(SecurityConfig.class) // Import the SecurityConfig to apply security settings
 public class UserControllerTest {
 
     @Autowired
@@ -63,11 +60,11 @@ public class UserControllerTest {
     @WithMockUser(username = "user", roles = {"USER"})
     public void testUpdateUserInfo() throws Exception {
         mockMvc.perform(post("/user/update")
-                        .with(csrf())
-                        .param("username", "newUser")
+                        .with(csrf())  // CSRF 토큰 추가
+                        .param("username", "newuser")
                         .param("phoneNumber", "0987654321")
                         .param("userEmail", "newuser@mirineglobal.com")
-                        .param("password", "newPassword"))
+                        .param("password", "newpassword"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true));
     }
@@ -75,7 +72,8 @@ public class UserControllerTest {
     @Test
     @WithMockUser(username = "user", roles = {"USER"})
     public void testDeleteUser() throws Exception {
-        mockMvc.perform(post("/user/delete").with(csrf()))
+        mockMvc.perform(post("/user/delete")
+                        .with(csrf()))  // CSRF 토큰 추가
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true));
     }
