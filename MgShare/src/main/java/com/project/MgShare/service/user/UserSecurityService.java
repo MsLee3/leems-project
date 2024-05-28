@@ -2,7 +2,7 @@ package com.project.MgShare.service.user;
 
 import com.project.MgShare.model.user.UserEntity;
 import com.project.MgShare.repository.user.UserRepository;
-import com.project.MgShare.Role.UserRole;
+import com.project.MgShare.role.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,4 +1,4 @@
-package com.project.MgShare.Role;
+package com.project.MgShare.role;
 
 import lombok.Getter;
 
