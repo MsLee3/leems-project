@@ -20,6 +20,7 @@ public class MemberController {
     public String First() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String)) {
             System.out.println("login中");
 
